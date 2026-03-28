@@ -1,4 +1,4 @@
-# Eldorado Node — HR Intelligence System
+# Eldorado Node - HR Intelligence System
 
 Marketing website for the Eldorado Node HR Intelligence SaaS platform.
 
@@ -7,7 +7,7 @@ Live at: https://hr.eldoradonode.work
 ## Pages
 
 - `index.html` — Main landing page with pricing and checkout
-- `privacy.html` — Privacy Policy (GDPR, UAE PDPL, Nigeria NDPR compliant)
+- `privacy.html` - Privacy Policy (GDPR, UAE PDPL, Nigeria NDPR compliant)
 - `terms.html` — Terms of Service
 - `dpa.html` — Data Processing Agreement
 - `CNAME` — GitHub Pages custom domain config
