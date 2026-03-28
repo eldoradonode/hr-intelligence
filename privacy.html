@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Eldorado Node HR Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f1e35;--navy2:#162844;--gold:#C9A84C;--grey:#94a3b8;--border:rgba(201,168,76,0.15);--white:#fff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--navy);color:var(--white);line-height:1.8;}
+nav{padding:20px 64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--navy2);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-back{font-size:13px;color:var(--grey);text-decoration:none;transition:color .2s;}
+.nav-back:hover{color:var(--white);}
+.content{max-width:760px;margin:0 auto;padding:64px 24px 100px;}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;margin-bottom:8px;}
+.doc-date{font-size:13px;color:var(--grey);margin-bottom:48px;}
+.gold-rule{height:2px;background:var(--gold);margin-bottom:48px;}
+h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin:40px 0 16px;color:var(--white);}
+h3{font-size:16px;font-weight:600;margin:28px 0 10px;color:var(--white);}
+p{font-size:15px;color:var(--grey);margin-bottom:16px;line-height:1.8;}
+ul{margin:0 0 16px 20px;}
+li{font-size:15px;color:var(--grey);margin-bottom:8px;line-height:1.7;}
+strong{color:var(--white);font-weight:600;}
+a{color:var(--gold);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.highlight-box{background:var(--navy2);border-left:3px solid var(--gold);padding:20px 24px;margin:24px 0;}
+.highlight-box p{margin:0;font-size:14px;}
+footer{background:var(--navy2);border-top:1px solid var(--border);padding:24px 64px;text-align:center;font-size:12px;color:var(--grey);}
+@media(max-width:768px){nav{padding:16px 20px;}.content{padding:40px 20px 80px;}footer{padding:24px 20px;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Eldorado <span>Node</span></a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="content">
+  <div class="doc-title">Privacy Policy</div>
+  <div class="doc-date">Last updated: 22 March 2026 · Effective date: 22 March 2026</div>
+  <div class="gold-rule"></div>
+
+  <div class="highlight-box">
+    <p><strong>Summary:</strong> Eldorado Node processes candidate data on behalf of corporate clients but never stores candidate documents (CVs, recordings) on our servers. Documents go directly to client-owned Google Drive folders. We only retain evaluation scores, metadata, and business records necessary to operate the service.</p>
+  </div>
+
+  <h2>1. Who We Are</h2>
+  <p>Eldorado Node ("we", "our", "us") is an AI automation engineering business operated by Eldorado Daniel, based in Abuja, FCT, Nigeria. We operate the HR Intelligence System at <strong>hr.eldoradonode.work</strong> and related services.</p>
+  <p>Contact: <a href="mailto:daniel@eldoradonode.work">daniel@eldoradonode.work</a></p>
+
+  <h2>2. Data We Process</h2>
+
+  <h3>2.1 Corporate Client Data</h3>
+  <p>When a corporate client registers with us, we collect and store:</p>
+  <ul>
+    <li>Company name and display name</li>
+    <li>Contact email address</li>
+    <li>Billing information (processed by Stripe or Paystack — we do not store card details)</li>
+    <li>Google Drive folder ID (used to route file uploads to client's own storage)</li>
+    <li>API usage metrics (submissions count, quota usage)</li>
+    <li>Account settings (brand colour, logo URL, ATS webhook)</li>
+  </ul>
+
+  <h3>2.2 Candidate Evaluation Data</h3>
+  <p>When a corporate client submits a candidate for evaluation, we process:</p>
+  <ul>
+    <li><strong>CV files and audio recordings</strong> — transmitted through our system and uploaded <strong>directly to the client's own Google Drive folder</strong>. We do not retain copies of these files.</li>
+    <li><strong>Candidate name and email</strong> — stored in our evaluation records to identify and route communications</li>
+    <li><strong>Evaluation scores and metadata</strong> — overall score, criteria scores, AI narrative, compliance status, role template, timestamps — stored in our Google Sheets database</li>
+    <li><strong>Recruiter notes</strong> — behavioural signals submitted by the client's HR team as part of the evaluation</li>
+  </ul>
+
+  <h3>2.3 System Data</h3>
+  <ul>
+    <li>Authentication logs (API key usage, timestamps)</li>
+    <li>Error logs (workflow failures, system events)</li>
+    <li>Audit trail records (immutable evaluation history for compliance)</li>
+  </ul>
+
+  <h2>3. How We Use Data</h2>
+  <ul>
+    <li>To deliver the HR Intelligence System services to corporate clients</li>
+    <li>To generate AI-powered candidate evaluation reports</li>
+    <li>To send transactional emails (reports, offer letters, rejection notices, onboarding)</li>
+    <li>To enforce usage quotas and manage billing</li>
+    <li>To maintain compliance audit trails as required by applicable law</li>
+    <li>To improve system performance and reliability</li>
+    <li>To comply with legal obligations</li>
+  </ul>
+
+  <h2>4. Data Sovereignty — Candidate Documents</h2>
+  <div class="highlight-box">
+    <p>Candidate CVs and interview recordings are <strong>never stored on Eldorado Node servers</strong>. These files are transmitted through our processing pipeline and uploaded directly to the corporate client's Google Drive folder. The client owns and controls these documents. Eldorado Node does not retain copies, does not have ongoing access to the files after upload, and cannot access them without the client's explicit permission.</p>
+  </div>
+  <p>This architecture ensures full compliance with data minimisation principles under GDPR Article 5(1)(c), UAE PDPL Article 10, and Nigeria NDPR Section 2.1(c).</p>
+
+  <h2>5. Legal Bases for Processing</h2>
+  <p>We process personal data under the following legal bases:</p>
+  <ul>
+    <li><strong>Contract performance</strong> — processing necessary to deliver services to corporate clients</li>
+    <li><strong>Legitimate interests</strong> — system security, fraud prevention, service improvement</li>
+    <li><strong>Legal obligation</strong> — compliance audit trails, regulatory reporting</li>
+    <li><strong>Consent</strong> — where obtained from data subjects for specific processing activities</li>
+  </ul>
+
+  <h2>6. Data Sharing</h2>
+  <p>We share data only with the following categories of third parties:</p>
+  <ul>
+    <li><strong>Google (Drive, Sheets)</strong> — for file storage routing and data storage. Google's privacy policy applies.</li>
+    <li><strong>Google (Gemini API)</strong> — candidate data is transmitted to Gemini 2.5 Flash for AI evaluation. Governed by Google's API Terms of Service.</li>
+    <li><strong>Groq</strong> — audio data is transmitted for transcription. Governed by Groq's Terms of Service.</li>
+    <li><strong>Tavily</strong> — candidate names may be used for professional footprint searches. Governed by Tavily's Terms of Service.</li>
+    <li><strong>Stripe / Paystack</strong> — payment processing. We do not store card details. Their respective privacy policies apply.</li>
+    <li><strong>SMTP providers</strong> — for email delivery.</li>
+  </ul>
+  <p>We do not sell, rent, or trade personal data to any third party for marketing purposes.</p>
+
+  <h2>7. International Data Transfers</h2>
+  <p>Our services operate across Nigeria, UAE, UK, and USA. Data may be processed in any country where our service providers maintain infrastructure. When transferring data from the UK or EEA, we rely on appropriate safeguards including standard contractual clauses.</p>
+
+  <h2>8. Data Retention</h2>
+  <ul>
+    <li><strong>Candidate evaluation records</strong> — retained for the duration of the client's subscription plus 12 months</li>
+    <li><strong>Audit log records</strong> — retained for 7 years for compliance purposes</li>
+    <li><strong>Client account data</strong> — retained for the duration of the subscription plus 6 months</li>
+    <li><strong>Candidate documents (CV, audio)</strong> — not retained by us; stored in client's Google Drive under client's retention policy</li>
+    <li><strong>Authentication logs</strong> — retained for 90 days</li>
+  </ul>
+
+  <h2>9. Security</h2>
+  <p>We implement appropriate technical and organisational measures to protect personal data, including:</p>
+  <ul>
+    <li>API key authentication for all data submissions</li>
+    <li>HTTPS encryption for all data in transit</li>
+    <li>Session token authentication for dashboard access</li>
+    <li>Rate limiting and brute force protection</li>
+    <li>Separate credentials for different system components</li>
+    <li>Immutable audit logging</li>
+  </ul>
+
+  <h2>10. Your Rights</h2>
+  <p>Depending on your location, you may have the following rights regarding your personal data:</p>
+  <ul>
+    <li><strong>Access</strong> — request a copy of data we hold about you</li>
+    <li><strong>Rectification</strong> — request correction of inaccurate data</li>
+    <li><strong>Erasure</strong> — request deletion of your data (subject to legal retention requirements)</li>
+    <li><strong>Portability</strong> — receive your data in a machine-readable format</li>
+    <li><strong>Objection</strong> — object to processing based on legitimate interests</li>
+    <li><strong>Restriction</strong> — request restriction of processing in certain circumstances</li>
+  </ul>
+  <p>To exercise any right, contact: <a href="mailto:daniel@eldoradonode.work">daniel@eldoradonode.work</a></p>
+
+  <h2>11. Cookies</h2>
+  <p>Our marketing website (hr.eldoradonode.work) uses session cookies only for authentication purposes. We do not use tracking cookies, advertising cookies, or third-party analytics cookies. No consent banner is required as we use only strictly necessary cookies.</p>
+
+  <h2>12. Children's Data</h2>
+  <p>Our services are intended for corporate HR use only. We do not knowingly process data relating to individuals under 18 years of age. If you believe we have inadvertently received data about a minor, please contact us immediately.</p>
+
+  <h2>13. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Material changes will be notified to active clients by email at least 14 days before taking effect. Continued use of the service after that date constitutes acceptance of the updated policy.</p>
+
+  <h2>14. Contact</h2>
+  <p>For privacy inquiries, data subject requests, or complaints:</p>
+  <p><strong>Eldorado Node</strong><br>
+  Abuja, FCT, Nigeria<br>
+  <a href="mailto:daniel@eldoradonode.work">daniel@eldoradonode.work</a></p>
+  <p>We will respond to all requests within 30 days.</p>
+</div>
+
+<footer>
+  © 2026 Eldorado Node · <a href="index.html">Home</a> · <a href="terms.html">Terms of Service</a> · <a href="dpa.html">Data Processing Agreement</a>
+</footer>
+</body>
+</html>
