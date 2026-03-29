@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Eldorado Node HR Intelligence - AI-powered candidate evaluation system for corporate HR teams. Screen smarter. Hire faster. Stay compliant.">
+<meta name="keywords" content="HR AI, candidate screening, recruitment automation, AI hiring, HR intelligence">
+<meta property="og:title" content="Eldorado Node - HR Intelligence System">
+<meta property="og:description" content="AI-powered candidate evaluation. Screen CVs, transcribe interviews, score against role benchmarks, and deliver intelligence reports to HR in minutes.">
+<meta property="og:url" content="https://hr.eldoradonode.work">
+<title>Eldorado Node - HR Intelligence System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #0f1e35;
+  --navy2:     #162844;
+  --navy3:     #1d3454;
+  --gold:      #C9A84C;
+  --gold2:     #e8c96a;
+  --gold-dim:  #8a6f32;
+  --cream:     #f5f0e8;
+  --white:     #ffffff;
+  --grey:      #94a3b8;
+  --border:    rgba(201,168,76,0.15);
+  --border2:   rgba(255,255,255,0.08);
+  --green:     #22c55e;
+  --red:       #ef4444;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(15,30,53,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+.nav-logo{display:flex;align-items:center;gap:14px;}
+.nav-logo-mark{
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo-svg{width:32px;height:32px;}
+.nav-logo-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:600;color:var(--white);
+  letter-spacing:.02em;
+}
+.nav-logo-text span{color:var(--gold);}
+.nav-tagline{
+  font-size:9px;color:rgba(201,168,76,0.5);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-top:2px;
+}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-links a{
+  font-size:13px;color:var(--grey);text-decoration:none;
+  letter-spacing:.04em;transition:color .2s;
+}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{
+  background:var(--gold);color:var(--navy);
+  border:none;padding:10px 24px;
+  font-family:'Outfit',sans-serif;
+  font-size:12px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  transition:all .2s;
+}
+.nav-cta:hover{background:var(--gold2);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 64px 80px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(22,40,68,0.8) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 80%, rgba(22,40,68,0.8) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+/* Grid lines */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.hero-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;color:var(--gold);
+  letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid var(--border);
+  padding:8px 20px;margin-bottom:32px;
+  animation:fadeUp .6s ease both;
+}
+.hero-label-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.5;transform:scale(.8);}
+}
+
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(48px,7vw,96px);
+  font-weight:600;line-height:1.05;
+  letter-spacing:-.02em;
+  margin-bottom:24px;
+  animation:fadeUp .6s .1s ease both;
+}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero h1 .line2{display:block;}
+
+.hero-sub{
+  font-size:clamp(16px,2vw,20px);
+  color:var(--grey);line-height:1.7;
+  max-width:600px;margin:0 auto 40px;
+  font-weight:300;
+  animation:fadeUp .6s .2s ease both;
+}
+
+.hero-actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  justify-content:center;
+  animation:fadeUp .6s .3s ease both;
+}
+
+.btn-primary{
+  background:var(--gold);color:var(--navy);
+  border:none;padding:16px 40px;
+  font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  transition:all .2s;display:inline-block;
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,0.3);}
+
+.btn-secondary{
+  background:transparent;color:var(--white);
+  border:1px solid rgba(255,255,255,0.2);
+  padding:16px 40px;
+  font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  transition:all .2s;display:inline-block;
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+
+.hero-stats{
+  display:flex;align-items:center;gap:48px;
+  margin-top:64px;padding-top:48px;
+  border-top:1px solid var(--border);
+  animation:fadeUp .6s .4s ease both;
+}
+.stat-item{text-align:center;}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:40px;font-weight:700;
+  color:var(--gold);line-height:1;
+  margin-bottom:6px;
+}
+.stat-label{font-size:11px;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;}
+.stat-divider{width:1px;height:48px;background:var(--border);}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── SECTION COMMON ── */
+.section{padding:100px 64px;position:relative;}
+.section-label{
+  font-size:10px;color:var(--gold);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:16px;display:block;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,5vw,56px);
+  font-weight:600;line-height:1.1;
+  letter-spacing:-.01em;
+  margin-bottom:20px;
+}
+.section-title em{color:var(--gold);font-style:italic;}
+.section-sub{
+  font-size:17px;color:var(--grey);
+  line-height:1.7;max-width:560px;
+  font-weight:300;
+}
+
+/* ── HOW IT WORKS ── */
+.how{background:var(--navy2);}
+.how-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+  margin-top:64px;
+  border:1px solid var(--border);
+}
+.how-item{
+  background:var(--navy2);
+  padding:40px 32px;
+  position:relative;
+  transition:background .2s;
+}
+.how-item:hover{background:var(--navy3);}
+.how-num{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--gold-dim);
+  letter-spacing:.1em;margin-bottom:20px;
+}
+.how-icon{font-size:32px;margin-bottom:16px;display:block;}
+.how-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  margin-bottom:10px;line-height:1.2;
+}
+.how-desc{font-size:14px;color:var(--grey);line-height:1.7;}
+.how-connector{
+  position:absolute;right:-20px;top:50%;
+  transform:translateY(-50%);
+  width:40px;height:1px;
+  background:var(--border);
+  z-index:1;
+}
+
+/* ── FEATURES ── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  margin-top:64px;
+  border:1px solid var(--border);
+}
+.feature-item{
+  background:var(--navy);
+  padding:40px 32px;
+  transition:background .2s;
+}
+.feature-item:hover{background:var(--navy2);}
+.feature-icon{
+  width:48px;height:48px;
+  background:rgba(201,168,76,0.1);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:20px;
+}
+.feature-title{
+  font-size:17px;font-weight:600;
+  margin-bottom:10px;line-height:1.3;
+}
+.feature-desc{font-size:14px;color:var(--grey);line-height:1.7;}
+
+/* ── SCORING ── */
+.scoring{background:var(--navy2);}
+.scoring-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+  margin-top:64px;
+}
+.scoring-criteria{display:flex;flex-direction:column;gap:16px;}
+.criteria-item{}
+.criteria-header{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:8px;
+}
+.criteria-name{font-size:14px;font-weight:500;}
+.criteria-weight{
+  font-size:11px;color:var(--gold);
+  font-family:'DM Mono',monospace;
+}
+.criteria-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;}
+.criteria-fill{height:4px;background:var(--gold);border-radius:2px;transition:width 1s ease;}
+.scoring-right{}
+.scoring-card{
+  background:var(--navy);
+  border:1px solid var(--border);
+  padding:32px;
+}
+.score-display{
+  display:flex;align-items:baseline;gap:8px;
+  margin-bottom:24px;
+}
+.score-big{
+  font-family:'Cormorant Garamond',serif;
+  font-size:80px;font-weight:700;
+  color:var(--gold);line-height:1;
+}
+.score-max{font-size:24px;color:var(--grey);}
+.score-label{
+  font-size:10px;color:var(--gold);
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.verdict-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(34,197,94,0.1);
+  border:1px solid rgba(34,197,94,0.3);
+  color:var(--green);
+  font-size:11px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 16px;margin-bottom:20px;
+}
+.narrative{
+  font-size:13px;color:var(--grey);
+  line-height:1.7;font-style:italic;
+  border-left:2px solid var(--gold);
+  padding-left:16px;
+}
+
+/* ── COMPLIANCE ── */
+.compliance-flags{
+  display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;
+}
+.flag-badge{
+  font-size:11px;padding:6px 14px;
+  border:1px solid;font-weight:600;
+  letter-spacing:.05em;
+}
+.flag-clear{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.08);}
+.flag-review{color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);}
+.flag-flag{color:var(--red);border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08);}
+
+/* ── INDUSTRIES ── */
+.industries-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:16px;margin-top:48px;
+}
+.industry-card{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  padding:28px 20px;text-align:center;
+  transition:all .2s;cursor:default;
+}
+.industry-card:hover{
+  border-color:var(--gold);
+  background:var(--navy3);
+  transform:translateY(-4px);
+}
+.industry-icon{font-size:32px;margin-bottom:12px;display:block;}
+.industry-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+.industry-desc{font-size:11px;color:var(--grey);}
+
+/* ── TESTIMONIAL / TRUST ── */
+.trust{background:var(--navy2);}
+.trust-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:24px;margin-top:48px;
+}
+.trust-card{
+  background:var(--navy);
+  border:1px solid var(--border);
+  padding:32px;
+}
+.trust-quote{
+  font-size:15px;color:var(--grey);
+  line-height:1.8;font-style:italic;
+  margin-bottom:24px;
+}
+.trust-author{
+  display:flex;align-items:center;gap:12px;
+}
+.trust-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--navy2);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;color:var(--gold);
+  font-family:'Cormorant Garamond',serif;
+}
+.trust-name{font-size:14px;font-weight:600;}
+.trust-role{font-size:12px;color:var(--grey);}
+
+/* ── PRICING ── */
+.pricing{background:var(--navy);}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:24px;margin-top:64px;
+  align-items:start;
+}
+.pricing-card{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  padding:40px 32px;
+  position:relative;
+  transition:transform .2s;
+}
+.pricing-card:hover{transform:translateY(-4px);}
+.pricing-card.featured{
+  border-color:var(--gold);
+  background:var(--navy3);
+}
+.pricing-card.featured::before{
+  content:'MOST POPULAR';
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--navy);
+  font-size:9px;font-weight:700;
+  letter-spacing:.12em;padding:5px 16px;
+  white-space:nowrap;
+}
+.pricing-tier{
+  font-size:10px;color:var(--gold);
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.pricing-price{
+  display:flex;align-items:baseline;gap:4px;
+  margin-bottom:4px;
+}
+.pricing-currency{font-size:20px;font-weight:600;margin-top:8px;}
+.pricing-amount{
+  font-family:'Cormorant Garamond',serif;
+  font-size:56px;font-weight:700;line-height:1;
+}
+.pricing-period{font-size:14px;color:var(--grey);}
+.pricing-evals{
+  font-size:13px;color:var(--gold);
+  margin-bottom:24px;font-weight:500;
+}
+.pricing-divider{
+  height:1px;background:var(--border);
+  margin-bottom:24px;
+}
+.pricing-features{
+  list-style:none;
+  display:flex;flex-direction:column;gap:12px;
+  margin-bottom:32px;
+}
+.pricing-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14px;color:var(--grey);line-height:1.5;
+}
+.pricing-features li::before{
+  content:'✓';color:var(--gold);
+  font-weight:700;flex-shrink:0;
+  margin-top:1px;
+}
+.pricing-features li.muted{color:rgba(148,163,184,0.4);}
+.pricing-features li.muted::before{content:'—';color:rgba(148,163,184,0.3);}
+.pricing-btn{
+  width:100%;padding:14px;
+  font-family:'Outfit',sans-serif;
+  font-size:12px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;border:none;
+  transition:all .2s;
+}
+.pricing-btn-gold{background:var(--gold);color:var(--navy);}
+.pricing-btn-gold:hover{background:var(--gold2);}
+.pricing-btn-outline{
+  background:transparent;color:var(--white);
+  border:1px solid rgba(255,255,255,0.2);
+}
+.pricing-btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── PAYMENT METHODS ── */
+.payment-methods{
+  display:flex;align-items:center;
+  justify-content:center;gap:16px;
+  margin-top:32px;flex-wrap:wrap;
+}
+.pay-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:8px 16px;
+  font-size:11px;color:var(--grey);
+  letter-spacing:.04em;
+}
+.pay-badge span{font-size:14px;}
+
+/* ── USDT SECTION ── */
+.usdt-section{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  padding:32px;margin-top:32px;
+  text-align:center;
+}
+.usdt-title{
+  font-size:14px;font-weight:600;
+  margin-bottom:8px;
+}
+.usdt-sub{font-size:13px;color:var(--grey);margin-bottom:16px;}
+.usdt-address{
+  font-family:'DM Mono',monospace;
+  font-size:12px;color:var(--gold);
+  background:var(--navy);
+  border:1px solid var(--border);
+  padding:12px 20px;
+  display:inline-block;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:all .2s;
+}
+.usdt-address:hover{border-color:var(--gold);}
+.usdt-note{font-size:11px;color:var(--grey);margin-top:10px;}
+
+/* ── FAQ ── */
+.faq{background:var(--navy2);}
+.faq-list{
+  max-width:720px;margin:48px auto 0;
+  display:flex;flex-direction:column;gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.faq-item{background:var(--navy2);}
+.faq-question{
+  padding:24px 28px;
+  display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;
+  font-size:15px;font-weight:500;
+  transition:background .2s;
+}
+.faq-question:hover{background:var(--navy3);}
+.faq-icon{
+  font-size:20px;color:var(--gold);
+  transition:transform .3s;flex-shrink:0;
+  margin-left:16px;
+}
+.faq-answer{
+  padding:0 28px;max-height:0;
+  overflow:hidden;transition:all .3s;
+}
+.faq-answer.open{
+  padding:0 28px 24px;max-height:300px;
+}
+.faq-answer p{font-size:14px;color:var(--grey);line-height:1.8;}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  padding:120px 64px;text-align:center;
+  position:relative;overflow:hidden;
+  background:var(--navy);
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.cta-section .section-title{font-size:clamp(40px,6vw,72px);}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--navy2);
+  border-top:1px solid var(--border);
+  padding:48px 64px;
+}
+.footer-inner{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:48px;
+  flex-wrap:wrap;
+  padding-bottom:40px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:32px;
+}
+.footer-brand{}
+.footer-logo-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  margin-bottom:4px;
+}
+.footer-logo-name span{color:var(--gold);}
+.footer-tagline{
+  font-size:10px;color:rgba(201,168,76,0.5);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.footer-desc{font-size:13px;color:var(--grey);max-width:280px;line-height:1.7;}
+.footer-links{}
+.footer-links-title{
+  font-size:11px;color:var(--gold);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.footer-links ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a{
+  font-size:13px;color:var(--grey);
+  text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:var(--white);}
+.footer-bottom{
+  display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-copy{font-size:12px;color:rgba(148,163,184,0.5);}
+.footer-legal{display:flex;gap:24px;}
+.footer-legal a{
+  font-size:12px;color:rgba(148,163,184,0.5);
+  text-decoration:none;transition:color .2s;
+}
+.footer-legal a:hover{color:var(--grey);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .section{padding:72px 24px;}
+  .hero{padding:100px 24px 60px;}
+  .how-grid{grid-template-columns:repeat(2,1fr);}
+  .features-grid{grid-template-columns:repeat(2,1fr);}
+  .scoring-inner{grid-template-columns:1fr;}
+  .industries-grid{grid-template-columns:repeat(3,1fr);}
+  .trust-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .footer-inner{flex-direction:column;}
+  .hero-stats{gap:24px;}
+  .cta-section{padding:72px 24px;}
+  footer{padding:40px 24px;}
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  z-index:1000;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  width:100%;max-width:520px;
+  padding:40px;
+  position:relative;
+  animation:fadeUp .3s ease;
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  background:none;border:none;
+  color:var(--grey);font-size:20px;cursor:pointer;
+  transition:color .2s;
+}
+.modal-close:hover{color:var(--white);}
+.modal-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:600;
+  margin-bottom:6px;
+}
+.modal-sub{font-size:13px;color:var(--grey);margin-bottom:28px;}
+.modal-plan-summary{
+  background:var(--navy);
+  border:1px solid var(--border);
+  padding:16px 20px;margin-bottom:24px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-plan-name{font-size:14px;font-weight:600;}
+.modal-plan-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:700;color:var(--gold);
+}
+.form-field{margin-bottom:16px;}
+.form-label{
+  font-size:11px;color:var(--grey);
+  letter-spacing:.08em;text-transform:uppercase;
+  display:block;margin-bottom:6px;
+}
+.form-input{
+  width:100%;background:var(--navy);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--white);font-family:'Outfit',sans-serif;
+  font-size:14px;padding:12px 14px;outline:none;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--gold);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.payment-tabs{
+  display:flex;gap:1px;
+  background:var(--border);
+  margin-bottom:20px;
+}
+.pay-tab{
+  flex:1;padding:10px;
+  background:var(--navy);
+  border:none;color:var(--grey);
+  font-family:'Outfit',sans-serif;
+  font-size:12px;font-weight:500;
+  letter-spacing:.06em;cursor:pointer;
+  transition:all .2s;
+}
+.pay-tab.active{background:var(--gold);color:var(--navy);font-weight:600;}
+.pay-content{display:none;}
+.pay-content.active{display:block;}
+.modal-submit{
+  width:100%;padding:14px;
+  background:var(--gold);color:var(--navy);
+  border:none;font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;margin-top:8px;
+}
+.modal-submit:hover{background:var(--gold2);}
+.modal-submit:disabled{opacity:.5;cursor:not-allowed;}
+.modal-note{
+  font-size:11px;color:var(--grey);
+  text-align:center;margin-top:12px;line-height:1.6;
+}
+.usdt-modal-info{
+  background:var(--navy);border:1px solid var(--border);
+  padding:16px;margin-bottom:16px;
+}
+.usdt-wallet-addr{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--gold);
+  word-break:break-all;
+  background:rgba(201,168,76,0.05);
+  border:1px solid var(--border);
+  padding:10px;margin:10px 0;
+  cursor:pointer;
+}
+.copy-btn{
+  background:none;border:1px solid var(--border);
+  color:var(--grey);font-size:11px;
+  padding:4px 10px;cursor:pointer;
+  transition:all .2s;letter-spacing:.04em;
+}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── SUCCESS STATE ── */
+.success-screen{
+  display:none;text-align:center;padding:20px 0;
+}
+.success-screen.show{display:block;}
+.success-icon{font-size:48px;margin-bottom:16px;}
+.success-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:600;
+  color:var(--gold);margin-bottom:8px;
+}
+.success-sub{font-size:14px;color:var(--grey);line-height:1.7;}
+</style>
+<script>
+  // Remove index.html from URL if accessed directly
+  (function(){
+    var p = window.location.pathname;
+    if(p.endsWith('/index.html')){
+      window.history.replaceState(null,'',p.replace('/index.html','/') + window.location.hash);
+    }
+  })();
+</script>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg class="nav-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="18" width="8" height="8" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <rect x="18" y="33" width="8" height="8" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <rect x="18" y="3" width="8" height="8" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <line x1="11" y1="22" x2="18" y2="22" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="22" y1="11" x2="22" y2="33" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="22" y2="33" stroke="#C9A84C" stroke-width="1.5" stroke-opacity="0.35"/>
+      </svg>
+      <div>
+        <div class="nav-logo-text">Eldorado <span>Node</span></div>
+        <div class="nav-tagline">The Gold Standard of AI</div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://eldoradonode.github.io/eldorado-intake/" target="_blank">Client Login</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-label">
+    <div class="hero-label-dot"></div>
+    AI-Powered HR Intelligence
+  </div>
+
+  <h1>
+    Screen Smarter.<br>
+    <em>Hire Faster.</em>
+    <span class="line2">Stay Compliant.</span>
+  </h1>
+
+  <p class="hero-sub">
+    The complete AI evaluation system for corporate HR teams. Submit a candidate and receive a full intelligence report with scores, analysis, compliance screening, and interview questions in under 5 minutes.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#" onclick="event.preventDefault();openTrial()" class="btn-primary">Start Free Trial</a>
+    <a href="#how" class="btn-secondary">See How It Works</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">&lt;5<span style="font-size:24px;">min</span></div>
+      <div class="stat-label">Report Delivery</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Scoring Criteria</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">30+</div>
+      <div class="stat-label">Languages</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Role Templates</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section how" id="how">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="section-label">The Process</span>
+    <h2 class="section-title">From submission to <em>decision</em><br>in four steps</h2>
+    <p class="section-sub">Your HR team only needs to do one thing: click HIRE or PASS. Everything else is automated.</p>
+
+    <div class="how-grid">
+      <div class="how-item">
+        <div class="how-num">01 /</div>
+        <span class="how-icon">📤</span>
+        <div class="how-title">Submit Candidate</div>
+        <div class="how-desc">Upload CV, interview recording, and job context through your branded intake form. Multilingual support included.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02 /</div>
+        <span class="how-icon">🧠</span>
+        <div class="how-title">AI Evaluates</div>
+        <div class="how-desc">Our AI engine parses the CV visually, transcribes the interview in 30+ languages, and searches the candidate's professional footprint online, all simultaneously.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03 /</div>
+        <span class="how-icon">📊</span>
+        <div class="how-title">Intelligence Report</div>
+        <div class="how-desc">HR receives a scored report with criteria breakdown, narrative verdict, compliance status, and 6 tailored interview questions.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">04 /</div>
+        <span class="how-icon">✅</span>
+        <div class="how-title">One Click Decision</div>
+        <div class="how-desc">Click HIRE: contract generates, offer sends, IT notifies, onboarding plan delivers. Click PASS: personalised rejection sends automatically.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="section" id="features">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="section-label">Platform Features</span>
+    <h2 class="section-title">Everything HR needs.<br><em>Nothing they don't.</em></h2>
+    <p class="section-sub">Built for corporate HR teams worldwide. Every feature designed around real recruitment workflows.</p>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🎙️</div>
+        <div class="feature-title">Multilingual Transcription</div>
+        <div class="feature-desc">Advanced AI transcription processes interviews in 30+ languages. Arabic, French, Yoruba, English: every candidate evaluated in their best language.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">CV Vision Parsing</div>
+        <div class="feature-desc">Our AI reads CVs as visual documents, not just text extraction. Tables, charts, layouts, formatting: all analysed for richer candidate signals.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">Role Template Benchmarking</div>
+        <div class="feature-desc">SALES, TECH, OPERATIONS, HEALTHCARE, or GENERAL templates. Each has unique success criteria and weighted scoring aligned to role requirements.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">Professional Footprint Search</div>
+        <div class="feature-desc">Our intelligence engine searches LinkedIn and the web for each candidate's professional presence. Online reputation, publications, and portfolio signals included in scoring.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-title">Compliance Screening</div>
+        <div class="feature-desc">Every evaluation is automatically screened for protected characteristic language. CLEAR, REVIEW, or FLAG status with a full audit trail for international regulatory compliance.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">Auto Contract Generation</div>
+        <div class="feature-desc">One click HIRE generates a PDF employment contract, sends the offer email, notifies IT provisioning, and delivers a role-specific 30/60/90 day plan.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">HR Intelligence Dashboard</div>
+        <div class="feature-desc">Live command centre with 14 sections: pipeline view, decisions queue, onboarding board, compliance flags, scoring analytics, error monitoring, and client management.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Data Sovereignty</div>
+        <div class="feature-desc">Candidate CVs and recordings upload directly to your own secure cloud storage. We never store your documents. Full GDPR and international data protection compliance.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📧</div>
+        <div class="feature-title">White-Label Emails</div>
+        <div class="feature-desc">Every email sent to candidates carries your company branding, colours, and display name. Candidates never see Eldorado Node. They only see you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCORING ── -->
+<section class="section scoring" id="scoring">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="section-label">Scoring Intelligence</span>
+    <h2 class="section-title">Six criteria.<br><em>One definitive score.</em></h2>
+    <p class="section-sub">Every candidate scored against a 100-point benchmark. The six criteria below show each weight and how much that criterion contributes to the final score. Weights adjust per role template.</p>
+
+    <div class="scoring-inner">
+      <div class="scoring-criteria">
+        <p style="font-size:11px;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;">Scoring Weight per Criterion</p>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">CV-Interview Consistency</div>
+            <div class="criteria-weight">30% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:100%"></div></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">Interview Clarity</div>
+            <div class="criteria-weight">25% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:83%"></div></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">Achievement Depth</div>
+            <div class="criteria-weight">20% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:66%"></div></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">CV Quality</div>
+            <div class="criteria-weight">10% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:33%"></div></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">Communication Behavior</div>
+            <div class="criteria-weight">8% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:27%"></div></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-header">
+            <div class="criteria-name">Professional Footprint</div>
+            <div class="criteria-weight">7% weight</div>
+          </div>
+          <div class="criteria-bar"><div class="criteria-fill" style="width:23%"></div></div>
+        </div>
+        <p style="font-size:11px;color:var(--grey);margin-top:8px;margin-bottom:16px;">Bars show relative weight. Each criterion is individually scored 0-100 then weighted to produce the final score.</p>
+        <div class="compliance-flags">
+          <span class="flag-badge flag-clear">CLEAR</span>
+          <span class="flag-badge flag-review">REVIEW</span>
+          <span class="flag-badge flag-flag">FLAG</span>
+          <span style="font-size:12px;color:var(--grey);margin-left:4px;line-height:1.5;">Compliance status on every evaluation</span>
+        </div>
+      </div>
+
+      <div class="scoring-right">
+        <div class="scoring-card">
+          <div class="score-label">Overall Intelligence Score</div>
+          <div class="score-display">
+            <div class="score-big">84</div>
+            <div class="score-max">/100</div>
+          </div>
+          <div class="verdict-badge">
+            <span>●</span> AI Recommendation: HIRE
+          </div>
+          <div class="narrative">
+            "Strong CV-to-interview alignment with quantified revenue achievements. Communication clear and structured. LinkedIn presence consistent with stated experience. Minor gap in enterprise account management depth. Recommend probing in follow-up interview."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES ── -->
+<section class="section" id="industries">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="section-label">Who It's For</span>
+    <h2 class="section-title">Built for every <em>industry.</em></h2>
+    <p class="section-sub">Five specialised evaluation templates, each calibrated with industry-specific benchmarks and success criteria.</p>
+
+    <div class="industries-grid">
+      <div class="industry-card">
+        <span class="industry-icon">📈</span>
+        <div class="industry-name">Sales</div>
+        <div class="industry-desc">Revenue quantification, pipeline management, objection handling</div>
+      </div>
+      <div class="industry-card">
+        <span class="industry-icon">💻</span>
+        <div class="industry-name">Technology</div>
+        <div class="industry-desc">Systems thinking, production depth, debugging methodology</div>
+      </div>
+      <div class="industry-card">
+        <span class="industry-icon">⚙️</span>
+        <div class="industry-name">Operations</div>
+        <div class="industry-desc">Process optimisation, KPI ownership, scalability</div>
+      </div>
+      <div class="industry-card">
+        <span class="industry-icon">🏥</span>
+        <div class="industry-name">Healthcare</div>
+        <div class="industry-desc">Compliance awareness, patient safety, CPD evidence</div>
+      </div>
+      <div class="industry-card">
+        <span class="industry-icon">✦</span>
+        <div class="industry-name">General</div>
+        <div class="industry-desc">Standard weights for all other roles and industries</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST ── -->
+<section class="section trust">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="section-label">Early Feedback</span>
+    <h2 class="section-title">What HR teams <em>say.</em></h2>
+
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-quote">"We used to spend 3 hours per candidate on initial screening. Now it takes us 5 minutes to read the report and click a button. The compliance screening alone justified the subscription."</div>
+        <div class="trust-author">
+          <div class="trust-avatar">AO</div>
+          <div>
+            <div class="trust-name">Amaka Okonkwo</div>
+            <div class="trust-role">Head of HR · Lagos, Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-quote">"The data sovereignty feature was non-negotiable for us. Candidate CVs going directly to our own Drive, never touching a third-party server. That is what closed the deal."</div>
+        <div class="trust-author">
+          <div class="trust-avatar">KA</div>
+          <div>
+            <div class="trust-name">Khalid Al-Rashid</div>
+            <div class="trust-role">Talent Director · Dubai, UAE</div>
+          </div>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-quote">"The white-label emails are seamless. Our candidates have no idea there's AI behind the process. They just see your brand throughout. Seamless, professional, end-to-end."</div>
+        <div class="trust-author">
+          <div class="trust-avatar">SM</div>
+          <div>
+            <div class="trust-name">Sarah Mitchell</div>
+            <div class="trust-role">Recruitment Manager · London, UK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="section pricing" id="pricing">
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <span class="section-label">Transparent Pricing</span>
+    <h2 class="section-title">One price. <em>Full platform.</em></h2>
+    <p class="section-sub" style="margin:0 auto 16px;">No hidden fees. No per-seat pricing. Pay for evaluations, get everything else included.</p>
+    <p style="font-size:13px;color:var(--grey);">All plans include: Full AI scoring · Compliance screening · White-label emails · Data sovereignty · Dashboard access</p>
+
+    <div class="pricing-grid">
+
+      <!-- STARTER -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">149</span>
+          <span class="pricing-period">/month</span>
+        </div>
+        <div class="pricing-evals">50 evaluations per month</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>All 5 role templates</li>
+          <li>AI scoring + compliance screening</li>
+          <li>Interview question generation</li>
+          <li>HR report email delivery</li>
+          <li>Auto contract generation</li>
+          <li>Candidate data sovereignty</li>
+          <li>Weekly intelligence brief</li>
+          <li class="muted">White-label portal</li>
+          <li class="muted">ATS integration</li>
+          <li class="muted">Priority support</li>
+        </ul>
+        <button class="pricing-btn pricing-btn-outline" onclick="openCheckout('STARTER','$149/month',149)">Get Started</button>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="pricing-card featured">
+        <div class="pricing-tier">Growth</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">349</span>
+          <span class="pricing-period">/month</span>
+        </div>
+        <div class="pricing-evals">200 evaluations per month</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Everything in Starter</li>
+          <li>White-label branded portal</li>
+          <li>ATS webhook integration</li>
+          <li>Custom brand colours + logo</li>
+          <li>Advanced compliance export</li>
+          <li>Benchmark calibration engine</li>
+          <li>Priority email support</li>
+          <li>Onboarding call included</li>
+          <li class="muted">Custom role benchmarks</li>
+          <li class="muted">Dedicated SLA</li>
+        </ul>
+        <button class="pricing-btn pricing-btn-gold" onclick="openCheckout('GROWTH','$349/month',349)">Get Started</button>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">899</span>
+          <span class="pricing-period">/month</span>
+        </div>
+        <div class="pricing-evals">1,000 evaluations per month</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Everything in Growth</li>
+          <li>Custom role benchmarks</li>
+          <li>Dedicated onboarding manager</li>
+          <li>99.9% SLA guarantee</li>
+          <li>Compliance audit export</li>
+          <li>Custom contract available</li>
+          <li>Phone + email support</li>
+          <li>Quarterly strategy review</li>
+          <li>API access for custom integrations</li>
+          <li>Volume top-up available</li>
+        </ul>
+        <button class="pricing-btn pricing-btn-outline" onclick="openCheckout('ENTERPRISE','$899/month',899)">Get Started</button>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHODS -->
+    <div class="payment-methods">
+      <div class="pay-badge"><span>💳</span> Card Payment</div>
+      <div class="pay-badge"><span>🌍</span> Local Currency</div>
+      <div class="pay-badge"><span>₮</span> USDT (TRC-20)</div>
+      <div class="pay-badge"><span>🔒</span> SSL Secured</div>
+    </div>
+
+    <!-- USDT SECTION -->
+    <div class="usdt-section" style="max-width:560px;margin:32px auto 0;">
+      <div class="usdt-title">Pay with USDT (TRC-20)</div>
+      <div class="usdt-sub">Send exact plan amount to this wallet address then email your receipt to daniel@eldoradonode.work with your company name and plan.</div>
+      <div class="usdt-address" onclick="copyUSDT()" id="usdt-addr">
+        <!-- REPLACE_WITH_YOUR_TRC20_WALLET_ADDRESS -->
+        TCbsNHQ5LPzzxCzyUxBygefd1dtrWMN7gZ
+      </div>
+      <div class="usdt-note">⚠️ TRC-20 network only. Send exact amount. Account activated within 24 hours of confirmation.</div>
+    </div>
+
+    <p style="margin-top:24px;font-size:13px;color:var(--grey);">
+      Need a custom plan? <a href="mailto:daniel@eldoradonode.work" style="color:var(--gold);">Contact us</a> for volume pricing and custom contracts.
+    </p>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="section faq" id="faq">
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <span class="section-label">Common Questions</span>
+    <h2 class="section-title">Everything you need <em>to know.</em></h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Where does my candidate data go?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Your candidate CVs and interview recordings upload directly to your own secure cloud storage folder, one you own and control. Eldorado Node processes the files for evaluation but never stores your documents on our servers. We only retain the evaluation scores and metadata needed to deliver your reports. Fully compliant with GDPR and applicable international data protection regulations.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How long does an evaluation take?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Most evaluations complete and deliver to your HR inbox within 2–5 minutes of submission. Processing time depends on audio length. A 30-minute interview recording takes slightly longer to transcribe than a 10-minute one. All processing happens in parallel: CV parsing, audio transcription, web search, and scoring all run simultaneously.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What languages are supported?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Our AI transcription engine supports 30+  languages for interview transcription including English, Arabic, French, Yoruba, Hausa, Spanish, Portuguese, Mandarin, and more. The system automatically detects the language and can generate bilingual reports when candidates speak a language other than English. CV parsing supports any language that appears in written text.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Can candidates see the AI scores?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>No. Scores and evaluation reports are delivered only to your HR team. Candidates receive standard professional emails such as offer letters, rejection notes, and confirmation pages, all branded with your company identity. They never see scores, criteria weights, or AI-generated content. The intelligence layer is entirely internal.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What happens when I exceed my monthly quota?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Submissions are blocked at the authentication gate once your quota is exhausted. You receive a clear error message indicating the quota limit and reset date. Quotas reset automatically on the 1st of each month. If you need additional evaluations before the reset, contact <a href="mailto:daniel@eldoradonode.work" style="color:var(--gold);">daniel@eldoradonode.work</a> for a one-time top-up or to upgrade your plan.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Is there a free trial?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Yes. Contact <a href="mailto:daniel@eldoradonode.work" style="color:var(--gold);">daniel@eldoradonode.work</a> to request a trial account with 5 free evaluations. This gives you enough to run real candidates through the system and see the full report quality before committing to a plan. No credit card required for the trial.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How does the compliance screening work?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Every evaluation output is scanned for references to protected characteristics including age, gender, race, religion, disability, pregnancy, and more, before the report is generated. Evaluations receive a CLEAR, REVIEW, or FLAG status. Flagged evaluations require HR review before a decision can be recorded, and all compliance events are logged in an immutable audit trail for regulatory reporting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <span class="section-label" style="display:block;margin-bottom:16px;">Ready to Transform Your Hiring?</span>
+  <h2 class="section-title">Stop screening. <em>Start deciding.</em></h2>
+  <p style="font-size:17px;color:var(--grey);max-width:500px;margin:0 auto 40px;line-height:1.7;">Join HR teams across the globe who have eliminated manual candidate screening entirely.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="#pricing" class="btn-primary">Choose Your Plan</a>
+    <a href="mailto:daniel@eldoradonode.work" class="btn-secondary">Talk to Us First</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo-name">Eldorado <span>Node</span></div>
+      <div class="footer-tagline">The Gold Standard of AI</div>
+      <p class="footer-desc">AI-powered HR intelligence for corporate teams. Screen smarter, hire faster, stay compliant.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-links-title">Product</div>
+      <ul>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#scoring">Scoring</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://eldoradonode.github.io/eldorado-intake/" target="_blank">Submit Candidate</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <div class="footer-links-title">Company</div>
+      <ul>
+        <li><a href="https://eldoradonode.work" target="_blank">About Eldorado Node</a></li>
+        <li><a href="mailto:daniel@eldoradonode.work">Contact Us</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+        <li><a href="dpa.html">Data Processing Agreement</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <div class="footer-links-title">Support</div>
+      <ul>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="mailto:daniel@eldoradonode.work">daniel@eldoradonode.work</a></li>
+        <li><a href="https://eldoradonode.work" target="_blank">Portfolio</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Eldorado Node. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="dpa.html">DPA</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── CHECKOUT MODAL ── -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCheckout()">✕</button>
+
+    <div id="checkout-form-view">
+      <div class="modal-title">Complete Your Order</div>
+      <div class="modal-sub">You will receive your API key and setup instructions by email.</div>
+
+      <div class="modal-plan-summary" id="modal-plan-summary">
+        <div class="modal-plan-name" id="modal-plan-name">Growth Plan</div>
+        <div class="modal-plan-price" id="modal-plan-price">$349/month</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">First Name *</label>
+          <input class="form-input" type="text" id="f-fname" placeholder="John" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Last Name *</label>
+          <input class="form-input" type="text" id="f-lname" placeholder="Smith" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Company Name *</label>
+        <input class="form-input" type="text" id="f-company" placeholder="Acme Corporation" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Work Email *</label>
+        <input class="form-input" type="email" id="f-email" placeholder="hr@yourcompany.com" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Cloud Storage Folder ID *</label>
+        <input class="form-input" type="text" id="f-drive" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs" />
+        <div style="font-size:11px;color:var(--grey);margin-top:5px;line-height:1.6;">
+          Create a folder in your cloud storage → Share it with <strong style="color:var(--gold);">eldoradonode.uploads@gmail.com</strong> (Editor access) and paste the folder ID from the URL here.
+          <a href="#" style="color:var(--gold);" onclick="showDriveHelp()">How to find it?</a>
+        </div>
+      </div>
+
+      <div class="payment-tabs" id="payment-tabs">
+        <button class="pay-tab active" onclick="switchTab('stripe')">💳 Card</button>
+        <button class="pay-tab" onclick="switchTab('paystack')">🇳🇬 Paystack</button>
+        <button class="pay-tab" onclick="switchTab('usdt')">₮ USDT</button>
+      </div>
+
+      <!-- STRIPE TAB -->
+      <div class="pay-content active" id="tab-stripe">
+        <div style="font-size:13px;color:var(--grey);margin-bottom:12px;padding:12px;background:var(--navy);border:1px solid var(--border);">
+          Secure card payment via Stripe. Accepts Visa, Mastercard, Amex.
+        </div>
+        <button class="modal-submit" id="stripe-btn" onclick="handleStripe()">
+          Pay with Card via Stripe
+        </button>
+      </div>
+
+      <!-- PAYSTACK TAB -->
+      <div class="pay-content" id="tab-paystack">
+        <div style="font-size:13px;color:var(--grey);margin-bottom:12px;padding:12px;background:var(--navy);border:1px solid var(--border);">
+          Pay in Naira via Paystack. Card, bank transfer, USSD supported.
+        </div>
+        <button class="modal-submit" id="paystack-btn" onclick="handlePaystack()">
+          Pay with Paystack
+        </button>
+      </div>
+
+      <!-- USDT TAB -->
+      <div class="pay-content" id="tab-usdt">
+        <div class="usdt-modal-info">
+          <div style="font-size:12px;color:var(--grey);margin-bottom:8px;">Send exact amount in USDT (TRC-20) to:</div>
+          <div class="usdt-wallet-addr" onclick="copyUSDT()" id="modal-usdt-addr">
+            TCbsNHQ5LPzzxCzyUxBygefd1dtrWMN7gZ
+          </div>
+          <button class="copy-btn" onclick="copyUSDT()">Copy Address</button>
+          <div style="font-size:11px;color:var(--grey);margin-top:8px;">TRC-20 network only · Exact amount · Activated within 24hrs</div>
+        </div>
+        <button class="modal-submit" onclick="handleUSDT()">
+          I Have Sent Payment. Notify Us
+        </button>
+      </div>
+
+      <div class="modal-note">
+        By subscribing you agree to our <a href="terms.html" style="color:var(--gold);">Terms of Service</a> and <a href="privacy.html" style="color:var(--gold);">Privacy Policy</a>.
+        Cancel anytime. No refunds on used evaluations.
+      </div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Order Received</div>
+      <div class="success-sub" id="success-msg">
+        Your account is being set up. You will receive your API key and onboarding instructions at your email address within a few minutes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG — SWAP THESE ───────────────────────────────────────────
+const PAYSTACK_PUBLIC_KEY = 'pk_live_6565804e2201b9cd8dd1b46be351881c98b1741a'; // pk_live_...
+const STRIPE_PUBLIC_KEY   = 'pk_test_51TG1xERrfVdpy2LMl9q4Ui5FwmWYGLPHMYrnD9stl5FAWRlk95GBVOCn2YnO6FbWqVXISVTu8IIPhBZ3ZBNau25L009ICOTwOF';   // pk_live_...
+const ADMIN_WEBHOOK_URL   = 'https://api.eldoradonode.work/webhook/eldorado/admin/create-client';
+const ADMIN_SECRET        = 'HRIntel-Admin-9Xv2Kp8mNq4w';
+const USDT_ADDRESS        = 'TCbsNHQ5LPzzxCzyUxBygefd1dtrWMN7gZ';
+
+// Plan config
+const PLANS = {
+  STARTER:    { name:'Starter',    price:149,  quota:50,   tier:'STARTER'    },
+  GROWTH:     { name:'Growth',     price:349,  quota:200,  tier:'GROWTH'     },
+  ENTERPRISE: { name:'Enterprise', price:899,  quota:1000, tier:'ENTERPRISE' }
+};
+
+let currentPlan = 'GROWTH';
+let currentAmount = 349;
+
+// Set USDT addresses
+document.getElementById('usdt-addr').textContent       = USDT_ADDRESS;
+document.getElementById('modal-usdt-addr').textContent = USDT_ADDRESS;
+
+// ── CHECKOUT MODAL ────────────────────────────────────────────────
+function openCheckout(plan, priceStr, amount) {
+  currentPlan   = plan;
+  currentAmount = amount;
+  document.getElementById('modal-plan-name').textContent  = PLANS[plan].name + ' Plan';
+  document.getElementById('modal-plan-price').textContent = priceStr;
+  document.getElementById('checkoutModal').classList.add('open');
+  document.getElementById('checkout-form-view').style.display = 'block';
+  document.getElementById('success-screen').classList.remove('show');
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+}
+
+document.getElementById('checkoutModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCheckout();
+});
+
+// ── PAYMENT TABS ──────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pay-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── FORM VALIDATION ───────────────────────────────────────────────
+function getFormData() {
+  const fname   = document.getElementById('f-fname').value.trim();
+  const lname   = document.getElementById('f-lname').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const drive   = document.getElementById('f-drive').value.trim();
+
+  if (!fname || !lname)  { alert('Please enter your full name.');        return null; }
+  if (!company)          { alert('Please enter your company name.');     return null; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return null; }
+  if (!drive)            { alert('Please enter your Cloud Storage Folder ID.'); return null; }
+
+  return { fname, lname, company, email, drive };
+}
+
+// ── CREATE CLIENT ACCOUNT ─────────────────────────────────────────
+async function createAccount(data, paymentMethod, paymentRef) {
+  try {
+    const plan = PLANS[currentPlan];
+    const res  = await fetch(ADMIN_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type':   'application/json',
+        'x-admin-secret': ADMIN_SECRET
+      },
+      body: JSON.stringify({
+        companyName:        data.company,
+        companyDisplayName: data.company,
+        contactEmail:       data.email,
+        tier:               plan.tier,
+        monthlyQuota:       plan.quota,
+        driveFolderId:      data.drive,
+        brandColor:         '#C9A84C',
+        paymentMethod,
+        paymentRef,
+        adminSecret:        ADMIN_SECRET
+      })
+    });
+
+    if (res.ok) {
+      showSuccess(data.email, paymentMethod);
+    } else {
+      const err = await res.json().catch(() => ({}));
+      alert('Account creation failed: ' + (err.message || err.error || 'Please contact daniel@eldoradonode.work'));
+    }
+  } catch(e) {
+    alert('Network error. Please email daniel@eldoradonode.work with your payment confirmation and company details.');
+  }
+}
+
+function showSuccess(email, method) {
+  document.getElementById('checkout-form-view').style.display = 'none';
+  const s = document.getElementById('success-screen');
+  s.classList.add('show');
+  const msg = method === 'usdt'
+    ? `Payment notification sent. Once we confirm your USDT transaction (usually within 24 hours), your API key will be sent to ${email}.`
+    : `Your account is being set up. Your API key and onboarding guide will arrive at ${email} within a few minutes.`;
+  document.getElementById('success-msg').textContent = msg;
+}
+
+// ── STRIPE ────────────────────────────────────────────────────────
+async function handleStripe() {
+  const data = getFormData();
+  if (!data) return;
+
+  const btn = document.getElementById('stripe-btn');
+  btn.disabled = true;
+  btn.textContent = 'Redirecting to Stripe...';
+
+  // ── SWAP: Replace with your Stripe Checkout Session creation
+  // You need a backend endpoint or use Stripe Payment Links
+  // Option A: Stripe Payment Link (simplest — create in Stripe dashboard, paste URL here)
+  // window.open('YOUR_STRIPE_PAYMENT_LINK_URL', '_blank');
+  //
+  // Option B: Stripe Checkout Session via your backend
+  // const session = await fetch('YOUR_BACKEND/create-checkout-session', {...})
+  //
+  // For now — redirect to payment link per plan
+  const stripeLinks = {
+    STARTER:    'https://buy.stripe.com/test_aFacN777MbRq26p1me3Ru01',
+    GROWTH:     'https://buy.stripe.com/test_fZu28t1Ns2gQ4ex5Cu3Ru04',
+    ENTERPRISE: 'https://buy.stripe.com/test_7sYfZj4ZE6x612l8OG3Ru03'
+  };
+
+  const link = stripeLinks[currentPlan];
+  if (link) {
+    // Store pending account data in sessionStorage for post-payment webhook
+    sessionStorage.setItem('pending_account', JSON.stringify(data));
+    window.open(link + '?prefilled_email=' + encodeURIComponent(data.email), '_blank');
+    showSuccess(data.email, 'stripe');
+  } else {
+    alert('Stripe is being configured. Please use Paystack or USDT for now, or contact daniel@eldoradonode.work');
+    btn.disabled = false;
+    btn.textContent = 'Pay with Card via Stripe';
+  }
+}
+
+// ── PAYSTACK ──────────────────────────────────────────────────────
+function handlePaystack() {
+  const data = getFormData();
+  if (!data) return;
+
+  if (!PAYSTACK_PUBLIC_KEY || PAYSTACK_PUBLIC_KEY === 'YOUR_PAYSTACK_PUBLIC_KEY_HERE') {
+    alert('Payment is being configured. Please contact daniel@eldoradonode.work to complete your order.');
+    return;
+  }
+
+  const plan   = PLANS[currentPlan];
+  // Convert USD to NGN (approximate rate — update regularly)
+  const USD_TO_NGN = 1420;
+  const amountKobo = plan.price * USD_TO_NGN * 100;
+
+  const handler = PaystackPop.setup({
+    key:       PAYSTACK_PUBLIC_KEY,
+    email:     data.email,
+    amount:    amountKobo,
+    currency:  'NGN',
+    ref:       'EN-' + Date.now(),
+    metadata: {
+      custom_fields: [
+        { display_name: 'Company',  variable_name: 'company',  value: data.company },
+        { display_name: 'Plan',     variable_name: 'plan',     value: plan.name    },
+        { display_name: 'Drive ID', variable_name: 'drive_id', value: data.drive   }
+      ]
+    },
+    callback: function(response) {
+      createAccount(data, 'paystack', response.reference);
+    },
+    onClose: function() {
+      console.log('Payment window closed');
+    }
+  });
+  handler.openIframe();
+}
+
+// ── USDT ──────────────────────────────────────────────────────────
+function handleUSDT() {
+  const data = getFormData();
+  if (!data) return;
+
+  const plan = PLANS[currentPlan];
+
+  // Send notification email via mailto
+  const subject = encodeURIComponent('USDT Payment — ' + plan.name + ' Plan — ' + data.company);
+  const body    = encodeURIComponent(
+    'Company: ' + data.company + '\n' +
+    'Email: ' + data.email + '\n' +
+    'Plan: ' + plan.name + ' ($' + plan.price + '/month)\n' +
+    'Drive Folder ID: ' + data.drive + '\n\n' +
+    'I have sent ' + plan.price + ' USDT to ' + USDT_ADDRESS + '\n\n' +
+    'Transaction Hash: [PASTE YOUR TX HASH HERE]'
+  );
+
+  window.open('mailto:daniel@eldoradonode.work?subject=' + subject + '&body=' + body);
+  showSuccess(data.email, 'usdt');
+}
+
+);
+}
+
+// ── DRIVE HELP ────────────────────────────────────────────────────
+function showDriveHelp() {
+  alert(
+    'How to find your Cloud Storage Folder ID:\n\n' +
+    '1. Go to drive.google.com\n' +
+    '2. Create a new folder (e.g. "Eldorado_HR_Candidates")\n' +
+    '3. Open the folder\n' +
+    '4. Look at the URL: it ends with /folders/XXXXXXXXX\n' +
+    '5. Copy the XXXXXXXXX part. That is your folder ID.\n\n' +
+    'Then share the folder with:\n' +
+    'eldoradonode.uploads@gmail.com\n' +
+    '(Give Editor access)'
+  );
+}
+
+// ── FAQ TOGGLE ────────────────────────────────────────────────────
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const icon   = el.querySelector('.faq-icon');
+  const isOpen = answer.classList.contains('open');
+
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(i => { i.textContent='+'; i.style.transform='rotate(0deg)'; });
+
+  if (!isOpen) {
+    answer.classList.add('open');
+    icon.textContent = '−';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// ── NAVBAR SCROLL ─────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(15,30,53,0.98)';
+  } else {
+    nav.style.background = 'rgba(15,30,53,0.85)';
+  }
+});
+
+// ── LOAD PAYSTACK SDK ─────────────────────────────
+const paystackScript = document.createElement('script');
+paystackScript.src = 'https://js.paystack.co/v1/inline.js';
+document.head.appendChild(paystackScript);
+
+// ── SCROLL ANIMATION ─────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-item,.how-item,.industry-card,.trust-card,.pricing-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+
+// ── FREE TRIAL MODAL ──────────────────────────────────────────────
+function openTrial() {
+  document.getElementById('trialModal').classList.add('open');
+  document.getElementById('trial-form-view').style.display = 'block';
+  document.getElementById('trial-success').classList.remove('show');
+}
+function closeTrial() {
+  document.getElementById('trialModal').classList.remove('open');
+}
+document.getElementById('trialModal').addEventListener('click', function(e) {
+  if (e.target === this) closeTrial();
+});
+
+async function submitTrial() {
+  const name    = document.getElementById('t-name').value.trim();
+  const company = document.getElementById('t-company').value.trim();
+  const email   = document.getElementById('t-email').value.trim();
+  const role    = document.getElementById('t-role').value.trim();
+
+  if (!name)    { alert('Please enter your name.');         return; }
+  if (!company) { alert('Please enter your company name.'); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+
+  const btn = document.getElementById('trial-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending Request...';
+
+  const subject = encodeURIComponent('Free Trial Request — ' + company);
+  const body    = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Company: ' + company + '\n' +
+    'Email: ' + email + '\n' +
+    'Role/Industry: ' + (role || 'Not specified') + '\n\n' +
+    'Requesting 5 free evaluation credits to test the HR Intelligence System.'
+  );
+  window.open('mailto:daniel@eldoradonode.work?subject=' + subject + '&body=' + body);
+
+  document.getElementById('trial-form-view').style.display = 'none';
+  document.getElementById('trial-success').classList.add('show');
+}
+
+// ── USDT COPY (instant, updates both elements) ────────────────────
+function copyUSDT() {
+  navigator.clipboard.writeText(USDT_ADDRESS).then(() => {
+    const els = [
+      document.getElementById('usdt-addr'),
+      document.getElementById('modal-usdt-addr')
+    ];
+    els.forEach(el => {
+      if (el) {
+        const prev = el.textContent;
+        el.textContent = 'Copied!';
+        el.style.color = 'var(--green)';
+        setTimeout(() => {
+          el.textContent = USDT_ADDRESS;
+          el.style.color = 'var(--gold)';
+        }, 2000);
+      }
+    });
+    // Also update copy button text if present
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      const prev = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = prev, 2000);
+    });
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = USDT_ADDRESS;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const el = document.getElementById('usdt-addr');
+    if (el) { el.textContent = 'Copied!'; setTimeout(()=>el.textContent=USDT_ADDRESS, 2000); }
+  });
+}
+
+</script>
+
+<!-- ── FREE TRIAL MODAL ── -->
+<div class="modal-overlay" id="trialModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeTrial()">✕</button>
+
+    <div id="trial-form-view">
+      <div class="modal-title">Start Free Trial</div>
+      <div class="modal-sub">Get 5 free evaluations — no credit card required. We will activate your account within a few hours.</div>
+
+      <div class="form-field">
+        <label class="form-label">Your Full Name *</label>
+        <input class="form-input" type="text" id="t-name" placeholder="Jane Smith" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Company Name *</label>
+        <input class="form-input" type="text" id="t-company" placeholder="Acme Corporation" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Work Email *</label>
+        <input class="form-input" type="email" id="t-email" placeholder="hr@yourcompany.com" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Your Industry / Role Type</label>
+        <input class="form-input" type="text" id="t-role" placeholder="e.g. Technology, Healthcare, Sales" />
+      </div>
+
+      <div style="background:var(--navy);border:1px solid var(--border);padding:16px 20px;margin-bottom:20px;">
+        <div style="font-size:12px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">What you get</div>
+        <div style="font-size:13px;color:var(--grey);line-height:1.8;">
+          ✓ 5 full candidate evaluations<br>
+          ✓ All role templates unlocked<br>
+          ✓ Complete intelligence reports<br>
+          ✓ No credit card required
+        </div>
+      </div>
+
+      <button class="modal-submit" id="trial-submit-btn" onclick="submitTrial()">
+        Request Free Trial
+      </button>
+      <div class="modal-note">
+        By requesting a trial you agree to our <a href="terms.html" style="color:var(--gold);">Terms of Service</a> and <a href="privacy.html" style="color:var(--gold);">Privacy Policy</a>.
+      </div>
+    </div>
+
+    <div class="success-screen" id="trial-success">
+      <div class="success-icon">🚀</div>
+      <div class="success-title">Trial Request Sent</div>
+      <div class="success-sub">
+        Check your email app — your trial request has been composed and sent to our team. We will activate your 5 free evaluations and send your API key within a few hours.
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
