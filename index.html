@@ -1721,12 +1721,18 @@ function openTrial() {
   document.getElementById('trial-form-view').style.display = 'block';
   document.getElementById('trial-success').classList.remove('show');
 }
+
 function closeTrial() {
   document.getElementById('trialModal').classList.remove('open');
 }
-document.getElementById('trialModal').addEventListener('click', function(e) {
-  if (e.target === this) closeTrial();
-});
+
+// Fixed the crash: Only adds the listener if the element actually exists
+const trialModal = document.getElementById('trialModal');
+if (trialModal) {
+  trialModal.addEventListener('click', function(e) {
+    if (e.target === this) closeTrial();
+  });
+}
 
 async function submitTrial() {
   const name    = document.getElementById('t-name').value.trim();
@@ -1742,18 +1748,35 @@ async function submitTrial() {
   btn.disabled = true;
   btn.textContent = 'Sending Request...';
 
-  const subject = encodeURIComponent('Free Trial Request — ' + company);
-  const body    = encodeURIComponent(
-    'Name: ' + name + '\n' +
-    'Company: ' + company + '\n' +
-    'Email: ' + email + '\n' +
-    'Role/Industry: ' + (role || 'Not specified') + '\n\n' +
-    'Requesting 5 free evaluation credits to test the HR Intelligence System.'
-  );
-  window.open('mailto:daniel@eldoradonode.work?subject=' + subject + '&body=' + body);
+  try {
+    // This replaces the "mailto" logic to actually trigger n8n
+    const response = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        companyName: company,
+        contactEmail: email,
+        name: name,
+        role: role || 'Not specified',
+        type: 'FREE_TRIAL',
+        adminSecret: ADMIN_SECRET 
+      })
+    });
 
-  document.getElementById('trial-form-view').style.display = 'none';
-  document.getElementById('trial-success').classList.add('show');
+    if (response.ok) {
+      // Only hide form and show success if the webhook actually fired
+      document.getElementById('trial-form-view').style.display = 'none';
+      document.getElementById('trial-success').classList.add('show');
+    } else {
+      alert('System busy. Please try again in a moment.');
+    }
+  } catch (error) {
+    console.error('Connection Error:', error);
+    alert('Network error. Check your connection.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Start Free Trial';
+  }
 }
 
 // ── USDT COPY (instant, updates both elements) ────────────────────
