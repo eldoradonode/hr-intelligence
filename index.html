@@ -1515,14 +1515,13 @@ function getFormData() {
 async function createAccount(data, paymentMethod, paymentRef) {
   try {
     const plan = PLANS[currentPlan];
-    const res  = await fetch(ADMIN_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type':   'application/json',
-        'x-admin-secret': ADMIN_SECRET
+    const res = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        companyName:        data.company,
+        companyName: data.company,
         companyDisplayName: data.company,
         contactEmail:       data.email,
         tier:               plan.tier,
