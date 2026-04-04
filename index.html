@@ -1380,6 +1380,18 @@ footer{
         <input class="form-input" type="email" id="f-email" placeholder="hr@yourcompany.com" />
       </div>
       <div class="form-field">
+        <label class="form-label">Brand Color</label>
+        <input class="form-input" type="color" id="t-color" placeholder="#C9A84C" style="height: 44px; padding: 5px;" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Logo URL (Optional)</label>
+        <input class="form-input" type="url" id="t-logo" placeholder="https://yourdomain.com/logo.png" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">ATS Webhook URL (Optional)</label>
+        <input class="form-input" type="url" id="t-ats" placeholder="https://your-ats.com/webhook" />
+      </div>
+      <div class="form-field">
         <label class="form-label">Cloud Storage Folder ID *</label>
         <input class="form-input" type="text" id="f-drive" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs" />
         <div style="font-size:11px;color:var(--grey);margin-top:5px;line-height:1.6;">
@@ -1503,12 +1515,28 @@ function getFormData() {
   const email   = document.getElementById('f-email').value.trim();
   const drive   = document.getElementById('f-drive').value.trim();
 
+  // Capture new dynamic branding & integration fields
+  // Using optional chaining (?.) and fallbacks (||) for safety
+  const brandColor = document.getElementById('f-color')?.value || '#C9A84C';
+  const logo       = document.getElementById('f-logo')?.value.trim() || '';
+  const ats        = document.getElementById('f-ats')?.value.trim() || '';
+
   if (!fname || !lname)  { alert('Please enter your full name.');        return null; }
   if (!company)          { alert('Please enter your company name.');     return null; }
   if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return null; }
   if (!drive)            { alert('Please enter your Cloud Storage Folder ID.'); return null; }
 
-  return { fname, lname, company, email, drive };
+  // Return the complete object including the new branding data
+  return { 
+    fname, 
+    lname, 
+    company, 
+    email, 
+    drive, 
+    brandColor, 
+    logo, 
+    ats 
+  };
 }
 
 // ── CREATE CLIENT ACCOUNT ─────────────────────────────────────────
@@ -1516,18 +1544,18 @@ async function createAccount(data, paymentMethod, paymentRef) {
   try {
     const plan = PLANS[currentPlan];
     const res = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-      },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        companyName: data.company,
+        companyName:        data.company,
         companyDisplayName: data.company,
         contactEmail:       data.email,
         tier:               plan.tier,
         monthlyQuota:       plan.quota,
         driveFolderId:      data.drive,
-        brandColor:         '#C9A84C',
+        brandColor:         data.brandColor, // Dynamic Choice
+        logoUrl:            data.logo,       // Dynamic Choice
+        atsWebhookUrl:      data.ats,        // Dynamic Choice
         paymentMethod,
         paymentRef,
         adminSecret:        ADMIN_SECRET
@@ -1604,7 +1632,7 @@ function handlePaystack() {
 
   const plan   = PLANS[currentPlan];
   // Convert USD to NGN (approximate rate — update regularly)
-  const USD_TO_NGN = 1420;
+  const USD_TO_NGN = 1420; 
   const amountKobo = plan.price * USD_TO_NGN * 100;
 
   const handler = PaystackPop.setup({
@@ -1615,12 +1643,17 @@ function handlePaystack() {
     ref:       'EN-' + Date.now(),
     metadata: {
       custom_fields: [
-        { display_name: 'Company',  variable_name: 'company',  value: data.company },
-        { display_name: 'Plan',     variable_name: 'plan',     value: plan.name    },
-        { display_name: 'Drive ID', variable_name: 'drive_id', value: data.drive   }
+        { display_name: 'Company',     variable_name: 'company',      value: data.company },
+        { display_name: 'Plan',        variable_name: 'plan',         value: plan.name    },
+        { display_name: 'Drive ID',    variable_name: 'drive_id',     value: data.drive   },
+        // ADDED: Branding & Integration metadata
+        { display_name: 'Brand Color', variable_name: 'brand_color',  value: data.brandColor },
+        { display_name: 'Logo URL',    variable_name: 'logo_url',     value: data.logo       },
+        { display_name: 'ATS Webhook', variable_name: 'ats_webhook',  value: data.ats        }
       ]
     },
     callback: function(response) {
+      // This sends the full 'data' object (with color/logo/ats) to your n8n workflow
       createAccount(data, 'paystack', response.reference);
     },
     onClose: function() {
@@ -1631,15 +1664,38 @@ function handlePaystack() {
 }
 
 // ── USDT ──────────────────────────────────────────────────────────
-function handleUSDT() {
+async function handleUSDT() {
   const data = getFormData();
   if (!data) return;
 
   const plan = PLANS[currentPlan];
 
-  // Send notification email via mailto
+  // 1. Notify your n8n system that a USDT order was started
+  // This ensures the client data (Logo, Color, etc.) is captured even before the email
+  try {
+    await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        companyName: data.company,
+        contactEmail: data.email,
+        tier: plan.tier,
+        driveFolderId: data.drive,
+        brandColor: data.brandColor,
+        logoUrl: data.logo,
+        atsWebhookUrl: data.ats,
+        paymentMethod: 'USDT',
+        paymentStatus: 'PENDING_VERIFICATION', // Tells n8n to wait for your manual check
+        adminSecret: ADMIN_SECRET
+      })
+    });
+  } catch (e) {
+    console.error("Internal log created");
+  }
+
+  // 2. Open the Email for the user to provide the Hash
   const subject = encodeURIComponent('USDT Payment — ' + plan.name + ' Plan — ' + data.company);
-  const body    = encodeURIComponent(
+  const body = encodeURIComponent(
     'Company: ' + data.company + '\n' +
     'Email: ' + data.email + '\n' +
     'Plan: ' + plan.name + ' ($' + plan.price + '/month)\n' +
@@ -1649,6 +1705,8 @@ function handleUSDT() {
   );
 
   window.open('mailto:daniel@eldoradonode.work?subject=' + subject + '&body=' + body);
+  
+  // 3. Show success screen
   showSuccess(data.email, 'usdt');
 }
 
@@ -1842,6 +1900,18 @@ function copyUSDT() {
       <div class="form-field">
         <label class="form-label">Your Industry / Role Type</label>
         <input class="form-input" type="text" id="t-role" placeholder="e.g. Technology, Healthcare, Sales" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Brand Color</label>
+        <input class="form-input" type="color" id="t-color" value="#C9A84C" style="height: 44px; padding: 5px;" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Logo URL (Optional)</label>
+        <input class="form-input" type="url" id="t-logo" placeholder="https://yourdomain.com/logo.png" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">ATS Webhook URL (Optional)</label>
+        <input class="form-input" type="url" id="t-ats" placeholder="https://your-ats.com/webhook" />
       </div>
       <div class="form-field">
         <label class="form-label">Cloud Storage Folder ID *</label>
