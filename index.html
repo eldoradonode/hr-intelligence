@@ -660,7 +660,24 @@ footer{
   padding:40px;
   position:relative;
   animation:fadeUp .3s ease;
+  
+  /* FIX: Added scrolling for long forms */
+  max-height: 90vh;
+  overflow-y: auto;
 }
+
+/* FIX: Custom scrollbar styling */
+.modal::-webkit-scrollbar {
+  width: 4px;
+}
+.modal::-webkit-scrollbar-track {
+  background: var(--navy2);
+}
+.modal::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}
+
 .modal-close{
   position:absolute;top:16px;right:16px;
   background:none;border:none;
