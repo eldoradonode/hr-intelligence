@@ -1393,20 +1393,24 @@ footer{
         <input class="form-input" type="text" id="f-company" placeholder="Acme Corporation" />
       </div>
       <div class="form-field">
+        <label class="form-label">Company Display Name</label>
+        <input class="form-input" type="text" id="f-companyDisplayName" placeholder="e.g. Acme Staffing Solutions" />
+      </div>
+      <div class="form-field">
         <label class="form-label">Work Email *</label>
         <input class="form-input" type="email" id="f-email" placeholder="hr@yourcompany.com" />
       </div>
       <div class="form-field">
         <label class="form-label">Brand Color</label>
-        <input class="form-input" type="color" id="t-color" placeholder="#C9A84C" style="height: 44px; padding: 5px;" />
+        <input class="form-input" type="color" id="f-color" value="#C9A84C" style="height: 44px; padding: 5px;" />
       </div>
       <div class="form-field">
         <label class="form-label">Logo URL (Optional)</label>
-        <input class="form-input" type="url" id="t-logo" placeholder="https://yourdomain.com/logo.png" />
+        <input class="form-input" type="url" id="f-logo" placeholder="https://yourdomain.com/logo.png" />
       </div>
       <div class="form-field">
         <label class="form-label">ATS Webhook URL (Optional)</label>
-        <input class="form-input" type="url" id="t-ats" placeholder="https://your-ats.com/webhook" />
+        <input class="form-input" type="url" id="f-ats" placeholder="https://your-ats.com/webhook" />
       </div>
       <div class="form-field">
         <label class="form-label">Cloud Storage Folder ID *</label>
@@ -1529,11 +1533,11 @@ function getFormData() {
   const fname   = document.getElementById('f-fname').value.trim();
   const lname   = document.getElementById('f-lname').value.trim();
   const company = document.getElementById('f-company').value.trim();
+  // Added Company Display Name
+  const companyDisplayName = document.getElementById('f-companyDisplayName')?.value.trim() || company;
   const email   = document.getElementById('f-email').value.trim();
   const drive   = document.getElementById('f-drive').value.trim();
 
-  // Capture new dynamic branding & integration fields
-  // Using optional chaining (?.) and fallbacks (||) for safety
   const brandColor = document.getElementById('f-color')?.value || '#C9A84C';
   const logo       = document.getElementById('f-logo')?.value.trim() || '';
   const ats        = document.getElementById('f-ats')?.value.trim() || '';
@@ -1543,11 +1547,11 @@ function getFormData() {
   if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return null; }
   if (!drive)            { alert('Please enter your Cloud Storage Folder ID.'); return null; }
 
-  // Return the complete object including the new branding data
   return { 
     fname, 
     lname, 
-    company, 
+    company,
+    companyDisplayName, // Included in return object
     email, 
     drive, 
     brandColor, 
@@ -1565,7 +1569,7 @@ async function createAccount(data, paymentMethod, paymentRef) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         companyName:        data.company,
-        companyDisplayName: data.company,
+        companyDisplayName: data.companyDisplayName,
         contactEmail:       data.email,
         tier:               plan.tier,
         monthlyQuota:       plan.quota,
@@ -1648,7 +1652,6 @@ function handlePaystack() {
   }
 
   const plan   = PLANS[currentPlan];
-  // Convert USD to NGN (approximate rate — update regularly)
   const USD_TO_NGN = 1420; 
   const amountKobo = plan.price * USD_TO_NGN * 100;
 
@@ -1660,17 +1663,18 @@ function handlePaystack() {
     ref:       'EN-' + Date.now(),
     metadata: {
       custom_fields: [
-        { display_name: 'Company',     variable_name: 'company',      value: data.company },
-        { display_name: 'Plan',        variable_name: 'plan',         value: plan.name    },
-        { display_name: 'Drive ID',    variable_name: 'drive_id',     value: data.drive   },
-        // ADDED: Branding & Integration metadata
-        { display_name: 'Brand Color', variable_name: 'brand_color',  value: data.brandColor },
-        { display_name: 'Logo URL',    variable_name: 'logo_url',     value: data.logo       },
-        { display_name: 'ATS Webhook', variable_name: 'ats_webhook',  value: data.ats        }
+        { display_name: 'Company',          variable_name: 'company',      value: data.company },
+        // ADDED: Company Display Name for Paystack Dashboard records
+        { display_name: 'Display Name',     variable_name: 'display_name', value: data.companyDisplayName },
+        { display_name: 'Plan',             variable_name: 'plan',         value: plan.name    },
+        { display_name: 'Drive ID',         variable_name: 'drive_id',     value: data.drive   },
+        { display_name: 'Brand Color',      variable_name: 'brand_color',  value: data.brandColor },
+        { display_name: 'Logo URL',         variable_name: 'logo_url',     value: data.logo       },
+        { display_name: 'ATS Webhook',      variable_name: 'ats_webhook',  value: data.ats        }
       ]
     },
     callback: function(response) {
-      // This sends the full 'data' object (with color/logo/ats) to your n8n workflow
+      // SUCCESS: 'data' already includes brandColor, logo, ats, and companyDisplayName
       createAccount(data, 'paystack', response.reference);
     },
     onClose: function() {
@@ -1687,37 +1691,42 @@ async function handleUSDT() {
 
   const plan = PLANS[currentPlan];
 
-  // 1. Notify your n8n system that a USDT order was started
-  // This ensures the client data (Logo, Color, etc.) is captured even before the email
+  // 1. Notify your n8n system (Capture all branding/config now)
   try {
     await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        companyName: data.company,
-        contactEmail: data.email,
-        tier: plan.tier,
-        driveFolderId: data.drive,
-        brandColor: data.brandColor,
-        logoUrl: data.logo,
-        atsWebhookUrl: data.ats,
-        paymentMethod: 'USDT',
-        paymentStatus: 'PENDING_VERIFICATION', // Tells n8n to wait for your manual check
-        adminSecret: ADMIN_SECRET
+        companyName:        data.company,
+        companyDisplayName: data.companyDisplayName || data.company, // Added
+        contactEmail:       data.email,
+        tier:               plan.tier,
+        driveFolderId:      data.drive,
+        brandColor:         data.brandColor || '#C9A84C', // Added
+        logoUrl:            data.logo || '',             // Added
+        atsWebhookUrl:      data.ats || '',              // Added
+        paymentMethod:      'USDT',
+        paymentStatus:      'PENDING_VERIFICATION', 
+        adminSecret:        ADMIN_SECRET
       })
     });
   } catch (e) {
-    console.error("Internal log created");
+    console.error("Internal log created", e);
   }
 
   // 2. Open the Email for the user to provide the Hash
-  const subject = encodeURIComponent('USDT Payment — ' + plan.name + ' Plan — ' + data.company);
+  const subject = encodeURIComponent('USDT Payment — ' + plan.name + ' Plan — ' + (data.companyDisplayName || data.company));
+  
+  // Updated Email Body to include all captured info for your records
   const body = encodeURIComponent(
     'Company: ' + data.company + '\n' +
+    'Display Name: ' + (data.companyDisplayName || 'N/A') + '\n' +
     'Email: ' + data.email + '\n' +
     'Plan: ' + plan.name + ' ($' + plan.price + '/month)\n' +
-    'Drive Folder ID: ' + data.drive + '\n\n' +
-    'I have sent ' + plan.price + ' USDT to ' + USDT_ADDRESS + '\n\n' +
+    'Drive Folder ID: ' + data.drive + '\n' +
+    'Brand Color: ' + (data.brandColor || '#C9A84C') + '\n' +
+    'Logo URL: ' + (data.logo || 'None') + '\n\n' +
+    'I have sent ' + plan.price + ' USDT to ' + (typeof USDT_ADDRESS !== 'undefined' ? USDT_ADDRESS : '[Address]') + '\n\n' +
     'Transaction Hash: [PASTE YOUR TX HASH HERE]'
   );
 
@@ -1801,7 +1810,6 @@ function closeTrial() {
   document.getElementById('trialModal').classList.remove('open');
 }
 
-// Fixed the crash: Only adds the listener if the element actually exists
 const trialModal = document.getElementById('trialModal');
 if (trialModal) {
   trialModal.addEventListener('click', function(e) {
@@ -1810,36 +1818,49 @@ if (trialModal) {
 }
 
 async function submitTrial() {
-  const name    = document.getElementById('t-name').value.trim();
-  const company = document.getElementById('t-company').value.trim();
-  const email   = document.getElementById('t-email').value.trim();
-  const role    = document.getElementById('t-role').value.trim();
+  // Capture all fields from the Trial Modal
+  const name               = document.getElementById('t-name').value.trim();
+  const company            = document.getElementById('t-company').value.trim();
+  const companyDisplayName = document.getElementById('t-companyDisplayName')?.value.trim() || company;
+  const email              = document.getElementById('t-email').value.trim();
+  const role               = document.getElementById('t-role').value.trim();
+  
+  // New Fields
+  const brandColor         = document.getElementById('t-color')?.value || '#C9A84C';
+  const logoUrl            = document.getElementById('t-logo')?.value.trim() || '';
+  const atsWebhookUrl      = document.getElementById('t-ats')?.value.trim() || '';
+  const driveFolderId      = document.getElementById('t-drive')?.value.trim() || '';
 
+  // Validation
   if (!name)    { alert('Please enter your name.');         return; }
   if (!company) { alert('Please enter your company name.'); return; }
   if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  if (!driveFolderId) { alert('Please enter your Cloud Storage Folder ID.'); return; }
 
   const btn = document.getElementById('trial-submit-btn');
   btn.disabled = true;
   btn.textContent = 'Sending Request...';
 
   try {
-    // This replaces the "mailto" logic to actually trigger n8n
     const response = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        companyName: company,
-        contactEmail: email,
-        name: name,
-        role: role || 'Not specified',
-        type: 'FREE_TRIAL',
-        adminSecret: ADMIN_SECRET 
+        companyName:        company,
+        companyDisplayName: companyDisplayName,
+        contactEmail:       email,
+        name:               name,
+        role:               role || 'Not specified',
+        brandColor:         brandColor,
+        logoUrl:            logoUrl,
+        atsWebhookUrl:      atsWebhookUrl,
+        driveFolderId:      driveFolderId,
+        type:               'FREE_TRIAL',
+        adminSecret:        ADMIN_SECRET 
       })
     });
 
     if (response.ok) {
-      // Only hide form and show success if the webhook actually fired
       document.getElementById('trial-form-view').style.display = 'none';
       document.getElementById('trial-success').classList.add('show');
     } else {
@@ -1911,6 +1932,10 @@ function copyUSDT() {
         <input class="form-input" type="text" id="t-company" placeholder="Acme Corporation" />
       </div>
       <div class="form-field">
+        <label class="form-label">Company Display Name</label>
+        <input class="form-input" type="text" id="t-companyDisplayName" placeholder="e.g. Acme Staffing Solutions" />
+      </div>
+      <div class="form-field">
         <label class="form-label">Work Email *</label>
         <input class="form-input" type="email" id="t-email" placeholder="hr@yourcompany.com" />
       </div>
@@ -1932,7 +1957,7 @@ function copyUSDT() {
       </div>
       <div class="form-field">
         <label class="form-label">Cloud Storage Folder ID *</label>
-        <input class="form-input" type="text" id="f-drive" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs" />
+        <input class="form-input" type="text" id="t-drive" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs" />
         <div style="font-size:11px;color:var(--grey);margin-top:5px;line-height:1.6;">
           Create a folder in your cloud storage → Share it with <strong style="color:var(--gold);">eldoradonode.uploads@gmail.com</strong> (Editor access) and paste the folder ID from the URL here.
           <a href="#" style="color:var(--gold);" onclick="showDriveHelp()">How to find it?</a>
