@@ -583,7 +583,7 @@ function showPanel(id, el) {
 
 async function fetchSheet(tab) {
   const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID +
-    '/values/' + encodeURIComponent(tab) + '?key=' + SHEETS_KEY;
+    '/values/' + encodeURIComponent(tab + '!A4:ZZ') + '?key=' + SHEETS_KEY;
   try {
     const res  = await fetch(url);
     const data = await res.json();
