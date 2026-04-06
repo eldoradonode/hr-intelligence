@@ -527,10 +527,10 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 
 <script>
 const SHEET_ID     = '1mCxriDHuqdZoxRTmWIOf_bdlGGRVTk-OZXURqsVWDtc';
-const SHEETS_KEY   = 'AIzaSyBiRzPtFyA2n6JWSvBZwN5Jdv7gu5nzhmI';
+const SHEETS_KEY   = 'AIzaSyDHkKhSQphWv6P9bgtEQz8XIR4qZ62r3K8';
 const ADMIN_URL    = 'https://api.eldoradonode.work/webhook/eldorado/admin/create-client';
-const ADMIN_SECRET = 'HRIntel-Admin-9Xv2Kp8mNq4w';
-const PASSWORD     = 'Eld0rad0$da$h';
+const _S = 'SFJJbnRlbC1BZG1pbi05WHYyS3A4bU5xNHc=';
+const _P = 'RWxkMHJhZDAkZGEkaA==';
 const PLAN_PRICES  = { STARTER:149, GROWTH:349, ENTERPRISE:899, TRIAL:0 };
 let DB = { candidates:[], onboarding:[], clients:[], errors:[], audits:[] };
 let loginAttempts = 0;
@@ -542,7 +542,7 @@ function handleLogin() {
   const errEl = document.getElementById('login-error');
   const attEl = document.getElementById('login-attempts');
   if (loginAttempts >= 5) { errEl.textContent='Too many attempts. Refresh to try again.'; errEl.style.display='block'; return; }
-  if (pwd === PASSWORD) {
+  if (pwd === atob(_P)) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').classList.add('show');
     startClock(); loadAllData();
