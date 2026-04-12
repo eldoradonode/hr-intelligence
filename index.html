@@ -1483,7 +1483,7 @@ footer{
 // ── CONFIG — SWAP THESE ───────────────────────────────────────────
 const PAYSTACK_PUBLIC_KEY = 'pk_live_6565804e2201b9cd8dd1b46be351881c98b1741a'; // pk_live_...
 const STRIPE_PUBLIC_KEY   = 'pk_test_51TG1xERrfVdpy2LMl9q4Ui5FwmWYGLPHMYrnD9stl5FAWRlk95GBVOCn2YnO6FbWqVXISVTu8IIPhBZ3ZBNau25L009ICOTwOF';   // pk_live_...
-const ADMIN_WEBHOOK_URL   = 'https://api.eldoradonode.work/webhook/eldorado/admin/create-client';
+const ADMIN_WEBHOOK_URL   = 'https://n8n.eldoradonode.work/webhook/eldorado/admin/create-client';
 const ADMIN_SECRET        = 'HRIntel-Admin-9Xv2Kp8mNq4w';
 const USDT_ADDRESS        = 'TCbsNHQ5LPzzxCzyUxBygefd1dtrWMN7gZ';
 
@@ -1564,7 +1564,7 @@ function getFormData() {
 async function createAccount(data, paymentMethod, paymentRef) {
   try {
     const plan = PLANS[currentPlan];
-    const res = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+    const res = await fetch('https://n8n.eldoradonode.work/webhook/eldorado/admin/create-client', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1693,7 +1693,7 @@ async function handleUSDT() {
 
   // 1. Notify your n8n system (Capture all branding/config now)
   try {
-    await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+    await fetch('https://n8n.eldoradonode.work/webhook/eldorado/admin/create-client', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1842,7 +1842,7 @@ async function submitTrial() {
   btn.textContent = 'Sending Request...';
 
   try {
-    const response = await fetch('https://api.eldoradonode.work/webhook/eldorado/admin/create-client', {
+    const response = await fetch('https://n8n.eldoradonode.work/webhook/eldorado/admin/create-client', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
